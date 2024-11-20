@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:30:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 10:45:21 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:08:47 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ t_error_code	validate_args(int argc, char **argv)
 		while (argv[index][chr])
 		{
 			if (!ft_isdigit(argv[index][chr]))
-				if (chr != 0 || (argv[index][chr] != '+' && argv[index][chr] != '-'))
+				if (chr != 0 || (argv[index][chr] != '+'
+					&& argv[index][chr] != '-'))
 					return (INV_ARG);
 			chr++;
 		}

@@ -6,13 +6,13 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:40:09 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 10:41:10 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:26:26 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static t_bool ft_isdigit(char c)
+t_bool	ft_isdigit(char c)
 {
 	return (c > '0' && c < '9');
 }
