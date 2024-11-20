@@ -3,13 +3,15 @@ NAME		:=	philo
 CC			:=	cc
 CFLAGS		:=	-Wall -Werror -Wextra -g
 
-INCS		:=	-I inc \
+INCS		:=	-I inc
 
-FILES		:=	philo.c \
-				validate_args.c \
+FILES		:=	ft_atoi.c \
+				ft_isdigit.c \
+				ft_calloc.c \
+				philo.c \
+				valid_args.c \
 				create_settings.c \
-				ft_atoi.c \
-				ft_isdigit.c
+				create_philo.c
 SRCS		:=	$(addprefix src/, $(FILES))
 OBJS		:=	$(addprefix obj/, $(FILES:.c=.o))
 
@@ -22,8 +24,8 @@ $(NAME): $(OBJS)
 	@echo "Linking: $(NAME)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
-obj/%.o: src/%.c
-	@echo "Compiling: $<"
+obj/%.o: src/%.c inc/philo.h
+	@echo "Compiling: $(notdir $<)"
 	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 clean:

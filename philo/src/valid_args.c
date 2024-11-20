@@ -6,19 +6,19 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:30:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 12:08:47 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:35:50 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_error_code	validate_args(int argc, char **argv)
+t_bool	valid_args(int argc, char **argv)
 {
 	int	index;
 	int	chr;
 
 	if (argc < 5 || argc > 6)
-		return (ARG_NUM);
+		return (false);
 	index = 1;
 	while (index < argc)
 	{
@@ -28,12 +28,12 @@ t_error_code	validate_args(int argc, char **argv)
 			if (!ft_isdigit(argv[index][chr]))
 				if (chr != 0 || (argv[index][chr] != '+'
 					&& argv[index][chr] != '-'))
-					return (INV_ARG);
+					return (false);
 			chr++;
 		}
 		if (ft_atoi(argv[index]) < 1)
-			return (INV_ARG);
+			return (false);
 		index++;
 	}
-	return (OK);
+	return (true);
 }

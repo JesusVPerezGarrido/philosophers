@@ -6,15 +6,15 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:19:21 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 12:26:47 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:31:53 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo_setting	create_settings(int argc, char **argv)
+t_settings	create_settings(int argc, char **argv)
 {
-	t_philo_setting	value;
+	t_settings	value;
 
 	value.time_die = ft_atoi(argv[2]);
 	value.time_eat = ft_atoi(argv[3]);
