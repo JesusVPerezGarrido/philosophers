@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 10:47:58 by jeperez-         ###   ########.fr       */
+/*   Created: 2024/11/20 10:40:09 by jeperez-          #+#    #+#             */
+/*   Updated: 2024/11/20 10:41:10 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+static t_bool ft_isdigit(char c)
 {
-	t_error_code exit_code;
-	
-	exit_code = validate_args(argc, argv);
-	if (exit_code)
-		return(exit_code);
-	return (OK);
+	return (c > '0' && c < '9');
 }

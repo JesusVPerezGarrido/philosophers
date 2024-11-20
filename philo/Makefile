@@ -5,7 +5,10 @@ CFLAGS		:=	-Wall -Werror -Wextra -g
 
 INCS		:=	-I inc \
 
-FILES		:=	philo.c
+FILES		:=	philo.c \
+				validate_args.c \
+				ft_atoi.c \
+				isdigit.c
 SRCS		:=	$(addprefix src/, $(FILES))
 OBJS		:=	$(addprefix obj/, $(FILES:.c=.o))
 
