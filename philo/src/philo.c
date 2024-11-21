@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 13:01:18 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:26:31 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 int	main(int argc, char **argv)
 {
-	t_settings	settings;
-	t_philo		*philos;
+	t_table	*table;
+	t_exit	exit;
 
-	
-	if (!valid_args(argc, argv))
-		return (1);
-	settings = create_settings(argc, argv);
-	philos = create_philo(ft_atoi(argv[1]), &settings);
-	if (!philos)
-		return (1);
-	free(philos);
-	return (0);
+	exit = valid_args(argc, argv);
+	if (exit)
+		return (exit);
+	table = 0;
+	exit = create_table(table, argc, argv);
+	if (exit)
+		return (exit);
+	return (OK);
 }

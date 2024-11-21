@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid_args.c                                       :+:      :+:    :+:   */
+/*   create_table.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 10:30:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:08:14 by jeperez-         ###   ########.fr       */
+/*   Created: 2024/11/21 10:53:58 by jeperez-          #+#    #+#             */
+/*   Updated: 2024/11/21 11:23:15 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_exit	valid_args(int argc, char **argv)
+t_exit	create_table(t_table *table, int argc, char **argv)
 {
-	int	index;
-	int	chr;
+	t_exit	exit;
 
-	if (argc < 5 || argc > 6)
-		return (ARG_NUM);
-	index = 1;
-	while (index < argc)
-	{
-		chr = 0;
-		while (argv[index][chr])
-		{
-			if (!ft_isdigit(argv[index][chr]))
-				if (chr != 0 || (argv[index][chr] != '+'
-					&& argv[index][chr] != '-'))
-					return (INV_ARG);
-			chr++;
-		}
-		if (ft_atoi(argv[index]) < 1)
-			return (INV_ARG);
-		index++;
-	}
+	table = ft_calloc(1, sizeof(t_table));
+	if (!table)
+		return (MALLOC_ERROR);
+	create_settings(table, argc, argv);
+	if (pthread_mutex_init(&table->print, NULL))
+		return (MUTEX_ERROR);
+	exit = create_forks(table);
+	if (exit)
+		return (exit);
+	exit = create_philos(table);
+	if (exit)
+		return (exit);
 	return (OK);
 }

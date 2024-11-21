@@ -5,13 +5,17 @@ CFLAGS		:=	-Wall -Werror -Wextra -g
 
 INCS		:=	-I inc
 
-FILES		:=	ft_atoi.c \
-				ft_isdigit.c \
-				ft_calloc.c \
-				philo.c \
-				valid_args.c \
+FILES		:=	create_forks.c \
+				create_philos.c \
 				create_settings.c \
-				create_philo.c
+				create_table.c \
+				ft_atoi.c \
+				ft_calloc.c \
+				ft_isdigit.c \
+				philo.c \
+				philo_manager.c \
+				time_utils.c \
+				valid_args.c
 SRCS		:=	$(addprefix src/, $(FILES))
 OBJS		:=	$(addprefix obj/, $(FILES:.c=.o))
 

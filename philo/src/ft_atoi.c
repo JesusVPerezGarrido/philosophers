@@ -6,19 +6,19 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:23:28 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 10:44:03 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:40:01 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	ft_isspace(char c)
+static t_bool	ft_isspace(char c)
 {
 	if (c >= '\t' && c <= '\r')
-		return (1);
+		return (true);
 	if (c == 32)
 		return (1);
-	return (0);
+	return (false);
 }
 
 static int	get_nbr(const char *nptr)

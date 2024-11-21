@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid_args.c                                       :+:      :+:    :+:   */
+/*   create_forks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 10:30:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:08:14 by jeperez-         ###   ########.fr       */
+/*   Created: 2024/11/20 13:12:53 by jeperez-          #+#    #+#             */
+/*   Updated: 2024/11/21 11:26:02 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_exit	valid_args(int argc, char **argv)
+t_exit	create_forks(t_table *table)
 {
-	int	index;
-	int	chr;
+	int		index;
 
-	if (argc < 5 || argc > 6)
-		return (ARG_NUM);
-	index = 1;
-	while (index < argc)
+	table->forks = ft_calloc(table->size, sizeof(t_fork));
+	if (!table->forks)
+		return (MALLOC_ERROR);
+	index = 0;
+	while (index < table->size)
 	{
-		chr = 0;
-		while (argv[index][chr])
-		{
-			if (!ft_isdigit(argv[index][chr]))
-				if (chr != 0 || (argv[index][chr] != '+'
-					&& argv[index][chr] != '-'))
-					return (INV_ARG);
-			chr++;
-		}
-		if (ft_atoi(argv[index]) < 1)
-			return (INV_ARG);
+		table->forks[index].id = index;
+		if (pthread_mutex_init(&table->forks[index].mutex, NULL))
+			return (MUTEX_ERROR);
 		index++;
 	}
 	return (OK);

@@ -6,40 +6,35 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:49:43 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/20 13:07:47 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:20:22 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void *philo_manager(void *arg)
+t_exit	create_philos(t_table *table)
 {
-	t_philo philo;
-	
-	philo = *(t_philo *)arg;
-	return (NULL);
-}
-
-t_philo	*create_philo(int nphilo, t_settings *setting)
-{
-	t_philo	*pbundle;
 	int		index;
+	t_philo	*philo;
 
-	pbundle = ft_calloc(nphilo, sizeof(t_philo));
-	if (!pbundle)
-		return (NULL);
+	table->philos = ft_calloc(table->size, sizeof(t_philo));
+	if (!table->philos)
+		return (MALLOC_ERROR);
 	index = 0;
-	while (index < nphilo)
+	while (index < table->size)
 	{
-		pbundle[index].id = index;
-		pbundle[index].settings = setting;
-		pthread_create(&pbundle[index].thread, NULL, philo_manager, &pbundle[index]);
-		if (!pbundle[index].thread)
-		{
-			free(pbundle);
-			return (NULL);
-		}
+		philo = &table->philos[index];
+		philo->id = index;
+		philo->alive = true;
+		philo->forks[0] = &table->forks[index];
+		philo->forks[1] = &table->forks[(index + 1) % table->size];
+		philo->settings = &table->settings;
+		if (pthread_mutex_init(&philo->mutex, NULL))
+			return (MUTEX_ERROR);
+		philo->print = &table->print;
+		if (pthread_create(&philo->thread, NULL, philo_manager, philo))
+			return (THREAD_ERROR);
 		index++;
 	}
-	return (pbundle);
+	return (OK);
 }
