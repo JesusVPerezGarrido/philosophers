@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_philo.c                                     :+:      :+:    :+:   */
+/*   create_philos.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:49:43 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:20:22 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:39:45 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_exit	create_philos(t_table *table)
 		philo->settings = &table->settings;
 		if (pthread_mutex_init(&philo->mutex, NULL))
 			return (MUTEX_ERROR);
+		pthread_mutex_lock(&philo->mutex);
 		philo->print = &table->print;
 		if (pthread_create(&philo->thread, NULL, philo_manager, philo))
 			return (THREAD_ERROR);
