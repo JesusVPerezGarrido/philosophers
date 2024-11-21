@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:25:41 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:30:18 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:55:13 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static t_bool	pheat(t_philo *philo)
 	pthread_mutex_lock(&philo->forks[1]->mutex);
 	gettimeofday(&philo->last_eat, NULL);
 	pthread_mutex_lock(philo->print);
-	printf("%li %i is eating\n", tvtoms(time_diff(philo->born,
-				philo->last_eat)), philo->id);
+	printf("%li %i is eating\n", tvtoms(time_diff(philo->last_eat,
+				philo->born)), philo->id);
 	pthread_mutex_unlock(philo->print);
 	usleep(mstomus(philo->settings->time_eat));
 	pthread_mutex_unlock(&philo->forks[0]->mutex);
@@ -39,8 +39,8 @@ static void	phsleep(t_philo *philo)
 
 	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(philo->print);
-	printf("%li %i is sleeping\n", tvtoms(time_diff(philo->born,
-				tv)), philo->id);
+	printf("%li %i is sleeping\n", tvtoms(time_diff(tv,
+				philo->born)), philo->id);
 	pthread_mutex_unlock(philo->print);
 	usleep(mstomus(philo->settings->time_sleep));
 }
@@ -52,8 +52,8 @@ static void	phthink(t_philo *philo)
 	philo->alive = true;
 	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(philo->print);
-	printf("%li %i is thinking\n", tvtoms(time_diff(philo->born,
-				tv)), philo->id);
+	printf("%li %i is thinking\n", tvtoms(time_diff(tv,
+				philo->born)), philo->id);
 	pthread_mutex_unlock(philo->print);
 }
 
@@ -61,7 +61,7 @@ void	*philo_manager(void *arg)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)arg;
+	philo = arg;
 	pthread_mutex_lock(&philo->mutex);
 	gettimeofday(&philo->born, NULL);
 	philo->last_eat = philo->born;

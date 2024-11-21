@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:49:43 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:39:45 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:01:32 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_exit	create_philos(t_table *table)
 		philo = &table->philos[index];
 		philo->id = index;
 		philo->alive = true;
+		philo->number_eat = 0;
 		philo->forks[0] = &table->forks[index];
 		philo->forks[1] = &table->forks[(index + 1) % table->size];
 		philo->settings = &table->settings;

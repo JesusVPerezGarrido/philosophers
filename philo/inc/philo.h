@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:57:53 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:29:08 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:53:36 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_philo
 	t_bool			alive;
 	struct timeval	born;
 	struct timeval	last_eat;
+	int				number_eat;
 	t_fork			*forks[2];
 	t_settings		*settings;
 	pthread_t		thread;
@@ -71,17 +72,17 @@ typedef struct s_table
 	pthread_mutex_t	print;
 	pthread_t		thread;
 	t_settings		settings;
-}			t_table;
+}					t_table;
 
 t_exit		valid_args(int argc, char **argv);
 int			ft_atoi(const char *nptr);
 t_bool		ft_isdigit(char c);
-t_exit		create_table(t_table *table, int argc, char **argv);
+t_exit		create_table(t_table **table, int argc, char **argv);
 void		create_settings(t_table *table, int argc, char **argv);
 t_exit		create_forks(t_table *table);
 t_exit		create_philos(t_table *table);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		*philo_manager(void *arg);
-t_fork		*create_fork(int nfork);
+void		*monitor_manager(void *arg);
 
 #endif

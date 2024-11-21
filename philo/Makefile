@@ -14,6 +14,7 @@ FILES		:=	create_forks.c \
 				ft_isdigit.c \
 				philo.c \
 				philo_manager.c \
+				monitor_manager.c \
 				time_utils.c \
 				valid_args.c
 SRCS		:=	$(addprefix src/, $(FILES))

@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:30:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:08:14 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:36:08 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_exit	valid_args(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		return (ARG_NUM);
 	index = 1;
+	if (ft_atoi(argv[1]) > 200)
+		return (INV_ARG);
 	while (index < argc)
 	{
 		chr = 0;
