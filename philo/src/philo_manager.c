@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 15:29:23 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:58:46 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static void	pheat(t_philo *philo)
 	pthread_mutex_unlock(philo->print);
 	philo->number_eat++;
 	wait(philo->settings->time_eat);
-	pthread_mutex_lock(philo->print);
-	pthread_mutex_unlock(philo->print);
 	pthread_mutex_unlock(&philo->forks[0]->mutex);
 	pthread_mutex_unlock(&philo->forks[1]->mutex);
 }
