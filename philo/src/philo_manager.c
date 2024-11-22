@@ -5,32 +5,48 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 14:25:41 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 15:55:13 by jeperez-         ###   ########.fr       */
+/*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
+/*   Updated: 2024/11/22 15:29:23 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static t_bool	pheat(t_philo *philo)
+static void	grab_fork(t_philo *philo, t_fork *fork)
 {
 	struct timeval	tv;
 
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(&fork->mutex);
 	gettimeofday(&tv, NULL);
-	if (tvtoms(time_diff(philo->last_eat, tv)) > philo->settings->time_die)
-		return (0);
-	pthread_mutex_lock(&philo->forks[0]->mutex);
-	pthread_mutex_lock(&philo->forks[1]->mutex);
+	pthread_mutex_lock(philo->print);
+	printf("%li %i has taken a fork\n", tvtoms(time_diff(tv, philo->born)),
+		philo->id);
+	pthread_mutex_unlock(philo->print);
+}
+
+static void	pheat(t_philo *philo)
+{
+	if (philo->id % 2)
+	{
+		grab_fork(philo, philo->forks[0]);
+		grab_fork(philo, philo->forks[1]);
+	}
+	else
+	{
+		grab_fork(philo, philo->forks[1]);
+		grab_fork(philo, philo->forks[0]);
+	}
 	gettimeofday(&philo->last_eat, NULL);
 	pthread_mutex_lock(philo->print);
 	printf("%li %i is eating\n", tvtoms(time_diff(philo->last_eat,
 				philo->born)), philo->id);
 	pthread_mutex_unlock(philo->print);
-	usleep(mstomus(philo->settings->time_eat));
+	philo->number_eat++;
+	wait(philo->settings->time_eat);
+	pthread_mutex_lock(philo->print);
+	pthread_mutex_unlock(philo->print);
 	pthread_mutex_unlock(&philo->forks[0]->mutex);
 	pthread_mutex_unlock(&philo->forks[1]->mutex);
-	return (1);
 }
 
 static void	phsleep(t_philo *philo)
@@ -39,21 +55,14 @@ static void	phsleep(t_philo *philo)
 
 	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(philo->print);
-	printf("%li %i is sleeping\n", tvtoms(time_diff(tv,
-				philo->born)), philo->id);
+	printf("%li %i is sleeping\n", tvtoms(time_diff(tv, philo->born)),
+		philo->id);
 	pthread_mutex_unlock(philo->print);
-	usleep(mstomus(philo->settings->time_sleep));
-}
-
-static void	phthink(t_philo *philo)
-{
-	struct timeval	tv;
-
-	philo->alive = true;
+	wait(philo->settings->time_sleep);
 	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(philo->print);
-	printf("%li %i is thinking\n", tvtoms(time_diff(tv,
-				philo->born)), philo->id);
+	printf("%li %i is thinking\n", tvtoms(time_diff(tv, philo->born)),
+		philo->id);
 	pthread_mutex_unlock(philo->print);
 }
 
@@ -62,18 +71,13 @@ void	*philo_manager(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	pthread_mutex_lock(&philo->mutex);
 	gettimeofday(&philo->born, NULL);
+	pthread_mutex_unlock(&philo->mutex);
 	philo->last_eat = philo->born;
 	while (true)
 	{
-		if (!pheat(philo))
-		{
-			philo->alive = false;
-			break ;
-		}
+		pheat(philo);
 		phsleep(philo);
-		phthink(philo);
 	}
-	return (NULL);
+	return (arg);
 }

@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 15:52:39 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:15:27 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,25 @@
 
 void	clean_table(t_table *table)
 {
-	if (table->philos)
-		free(table->philos);
-	if (table->forks)
-		free(table->forks);
-	free(table);
+	int index;
+	
+	if (table)
+	{
+		if (table->philos)
+			free(table->philos);
+		if (table->forks)
+		{
+			index = 0;
+			while (index < table->size)
+			{
+				pthread_mutex_destroy(&table->forks[index].mutex);
+				index++;
+			}
+			free(table->forks);
+		}
+		pthread_mutex_destroy(&table->print);
+		free(table);
+	}
 }
 
 int	main(int argc, char **argv)

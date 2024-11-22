@@ -6,11 +6,12 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:08:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 10:42:00 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:20:34 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "time_utils.h"
+#include <stdio.h>
 
 struct timeval	time_diff(struct timeval time1, struct timeval time2)
 {
@@ -33,4 +34,18 @@ t_milliseconds	tvtoms(struct timeval tv)
 t_microseconds	mstomus(t_microseconds ms)
 {
 	return (1000 * ms);
+}
+
+void	wait(t_milliseconds ms)
+{
+	struct timeval	start;
+	struct timeval	current;
+
+	gettimeofday(&start, 0);
+	current = start;
+	while (tvtoms(time_diff(current, start)) < ms)
+	{
+		usleep(ms);
+		gettimeofday(&current, 0);
+	}
 }

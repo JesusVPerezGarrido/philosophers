@@ -5,112 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 14:28:17 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 16:00:02 by jeperez-         ###   ########.fr       */
+/*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
+/*   Updated: 2024/11/22 15:33:44 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	feed_philos(t_table *table, t_bool *menu)
+static void	philo_start(t_table *table)
 {
-	static int	cycle = 0;
-	int			index;
-
+	int index;
+	
 	index = 0;
 	while (index < table->size)
 	{
-		if (menu[(index + cycle) % table->size])
-			pthread_mutex_unlock(&table->philos[index].mutex);
+		pthread_mutex_lock(&table->philos[index].mutex);
 		index++;
 	}
-	cycle = (cycle + 1) % table->size;
 }
 
-static t_bool	*plan_menu(t_table *table)
+static t_bool	check_death(struct timeval tv, t_table *table, int index)
 {
-	t_bool	*menu;
-	int		index;
+	t_philo			philo;
+	t_milliseconds	time_die;
 
-	menu = ft_calloc(table->size, sizeof(t_bool));
-	if (!menu)
-		return (NULL);
-	index = 0;
-	while (index < table->size)
+	philo = table->philos[index];
+	time_die = table->settings.time_die;
+	if (tvtoms(time_diff(tv, philo.last_eat)) > time_die + 1)
 	{
-		menu[index] = index % 2;
-		index++;
+		pthread_mutex_lock(&table->print);
+		printf("%li %i died\n", tvtoms(time_diff(tv, philo.born)), index);
+		pthread_mutex_unlock(&table->print);
+		return (true);
 	}
-	return (menu);
-}
-
-static int	lowest_eater(t_table *table)
-{
-	int	index;
-	int	lowest;
-
-	index = 0;
-	lowest = table->philos[0].number_eat;
-	while (index < table->size)
-	{
-		if (table->philos[index].number_eat < lowest)
-			lowest = table->philos[index].number_eat;
-		index++;
-	}
-	return (lowest);
-}
-
-static t_bool	check_death(t_table *table)
-{
-	int				index;
-	long			wait;
-	struct timeval	tv;
-
-	wait = 0;
-	while (100 * wait < mstomus(table->settings.time_eat) )
-	{
-		index = -1;
-		while (++index < table->size)
-		{
-			if (!table->philos[index].alive)
-			{
-				gettimeofday(&tv, NULL);
-				pthread_mutex_lock(&table->print);
-				printf("%li %i died", tvtoms(time_diff(tv,
-							table->philos[index].born)),
-					table->philos[index].id);
-				pthread_mutex_unlock(&table->print);
-				return (true);
-			}
-		}
-		wait++;
-		usleep(100);
-	}
-	return (false);
+	return (false);	
 }
 
 void	*monitor_manager(void *arg)
 {
-	t_table	*table;
-	t_bool	*menu;
-	int		index;
+	t_table			*table;
+	struct timeval	tv;
+	int				index;
+	int				lowest;
 
 	table = arg;
-	menu = plan_menu(table);
-	if (!menu)
-		return (NULL);
-	index = -1;
-	while (++index < table->size)
-		pthread_mutex_unlock(&table->philos[index].mutex);
+	philo_start(table);
 	while (true)
 	{
+		index = 0;
+		gettimeofday(&tv, NULL);
+		lowest = table->philos[0].number_eat;
+		while (index < table->size)
+		{
+			if (table->philos[index].number_eat < lowest)
+				lowest = table->philos[index].number_eat;
+			if (check_death(tv, table, index))
+				return (arg);
+			index++;
+		}
 		if (table->settings.number_eats
-			&& lowest_eater(table) < table->settings.number_eats)
-			break ;
-		feed_philos(table, menu);
-		if (check_death(table))
-			break ;
+			&& lowest >= table->settings.number_eats)
+			return (arg);
 	}
-	free(menu);
-	return (NULL);
+	return (arg);
 }

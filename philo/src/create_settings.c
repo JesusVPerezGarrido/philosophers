@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:19:21 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 11:01:13 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:38:40 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	create_settings(t_table *table, int argc, char **argv)
 	table->settings.time_sleep = ft_atoi(argv[4]);
 	table->settings.number_eats = 0;
 	if (argc == 6)
-		table->settings.time_sleep = ft_atoi(argv[5]);
+		table->settings.number_eats = ft_atoi(argv[5]);
 }

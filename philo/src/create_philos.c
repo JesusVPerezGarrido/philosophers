@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:49:43 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 15:01:32 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:31:56 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ t_exit	create_philos(t_table *table)
 	{
 		philo = &table->philos[index];
 		philo->id = index;
-		philo->alive = true;
 		philo->number_eat = 0;
 		philo->forks[0] = &table->forks[index];
 		philo->forks[1] = &table->forks[(index + 1) % table->size];
 		philo->settings = &table->settings;
+		philo->print = &table->print;
 		if (pthread_mutex_init(&philo->mutex, NULL))
 			return (MUTEX_ERROR);
 		pthread_mutex_lock(&philo->mutex);
-		philo->print = &table->print;
 		if (pthread_create(&philo->thread, NULL, philo_manager, philo))
 			return (THREAD_ERROR);
 		index++;

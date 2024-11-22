@@ -6,18 +6,18 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:57:53 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 15:53:36 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:31:49 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <unistd.h>		// write/usleep
+# include <unistd.h>		// write
 # include <stdio.h>			// printf
 # include <stdlib.h>		// malloc free
 # include <pthread.h>		// pthread/mutex
-# include "time_utils.h"	// gettimeofday
+# include "time_utils.h"	// gettimeofday/usleep
 # include <string.h> 		// memset
 
 typedef enum e_exit
@@ -48,12 +48,11 @@ typedef struct s_fork
 {
 	int				id;
 	pthread_mutex_t	mutex;
-}		t_fork;
+}					t_fork;
 
 typedef struct s_philo
 {
 	int				id;
-	t_bool			alive;
 	struct timeval	born;
 	struct timeval	last_eat;
 	int				number_eat;
