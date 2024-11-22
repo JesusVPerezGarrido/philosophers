@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 15:58:46 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/11/22 16:54:39 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*philo_manager(void *arg)
 	gettimeofday(&philo->born, NULL);
 	pthread_mutex_unlock(&philo->mutex);
 	philo->last_eat = philo->born;
-	while (true)
+	while (1)
 	{
 		pheat(philo);
 		phsleep(philo);
