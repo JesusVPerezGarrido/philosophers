@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:41:51 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:54:20 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	clean_table(t_table *table)
 {
-	int index;
-	
+	int	index;
+
 	if (table)
 	{
 		if (table->philos)
@@ -37,8 +37,8 @@ void	clean_table(t_table *table)
 
 static void	wait_philo(t_table *table)
 {
-	int index;
-	
+	int	index;
+
 	index = 0;
 	while (index < table->size)
 	{

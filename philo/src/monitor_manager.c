@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:45:53 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:54:04 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	philo_start(t_table *table)
 {
-	int index;
-	
+	int	index;
+
 	index = 0;
 	while (index < table->size)
 	{
@@ -39,7 +39,7 @@ static t_bool	check_death(struct timeval tv, t_table *table, int index)
 		pthread_mutex_unlock(&table->print);
 		return (true);
 	}
-	return (false);	
+	return (false);
 }
 
 void	*monitor_manager(void *arg)
@@ -53,21 +53,18 @@ void	*monitor_manager(void *arg)
 	philo_start(table);
 	while (true)
 	{
-		index = 0;
+		index = -1;
 		gettimeofday(&tv, NULL);
 		lowest = table->philos[0].number_eat;
-		while (index < table->size)
+		while (++index < table->size)
 		{
 			if (table->philos[index].number_eat < lowest)
 				lowest = table->philos[index].number_eat;
 			if (check_death(tv, table, index))
 				break ;
-			index++;
 		}
-		if (table->lethal)
-			break ;
-		if (table->settings.number_eats
-			&& lowest >= table->settings.number_eats)
+		if (table->lethal || (table->settings.number_eats
+				&& lowest >= table->settings.number_eats))
 			break ;
 	}
 	table->lethal = true;
