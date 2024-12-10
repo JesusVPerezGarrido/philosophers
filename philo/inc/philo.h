@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:57:53 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 16:54:43 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:37:53 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_philo
 	int				number_eat;
 	t_fork			*forks[2];
 	t_settings		*settings;
+	t_bool			*lethal;
 	pthread_t		thread;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*print;
@@ -68,6 +69,7 @@ typedef struct s_table
 	int				size;
 	t_philo			*philos;
 	t_fork			*forks;
+	t_bool			lethal;
 	pthread_mutex_t	print;
 	pthread_t		thread;
 	t_settings		settings;

@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 16:55:40 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:45:53 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static t_bool	check_death(struct timeval tv, t_table *table, int index)
 	time_die = table->settings.time_die;
 	if (tvtoms(time_diff(tv, philo.last_eat)) > time_die + 1)
 	{
+		table->lethal = true;
 		pthread_mutex_lock(&table->print);
 		printf("%li %i died\n", tvtoms(time_diff(tv, philo.born)), index);
 		pthread_mutex_unlock(&table->print);
@@ -60,12 +61,15 @@ void	*monitor_manager(void *arg)
 			if (table->philos[index].number_eat < lowest)
 				lowest = table->philos[index].number_eat;
 			if (check_death(tv, table, index))
-				return (arg);
+				break ;
 			index++;
 		}
+		if (table->lethal)
+			break ;
 		if (table->settings.number_eats
 			&& lowest >= table->settings.number_eats)
-			return (arg);
+			break ;
 	}
+	table->lethal = true;
 	return (arg);
 }

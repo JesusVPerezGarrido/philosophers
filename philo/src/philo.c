@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 14:15:27 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:41:51 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void	clean_table(t_table *table)
 	}
 }
 
+static void	wait_philo(t_table *table)
+{
+	int index;
+	
+	index = 0;
+	while (index < table->size)
+	{
+		pthread_join(table->philos[index].thread, 0);
+		index++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_table	*table;
@@ -50,6 +62,7 @@ int	main(int argc, char **argv)
 		return (exit);
 	}
 	pthread_join(table->thread, NULL);
+	wait_philo(table);
 	clean_table(table);
 	return (OK);
 }

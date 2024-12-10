@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:53:58 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/21 15:53:18 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:38:18 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_exit	create_table(t_table **table, int argc, char **argv)
 	if (!*table)
 		return (MALLOC_ERROR);
 	create_settings(*table, argc, argv);
+	(*table)->lethal = false;
 	if (pthread_mutex_init(&(*table)->print, NULL))
 		return (MUTEX_ERROR);
 	exit = create_forks(*table);

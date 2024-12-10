@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 16:54:39 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:46:51 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	grab_fork(t_philo *philo, t_fork *fork)
 
 	pthread_mutex_lock(&fork->mutex);
 	gettimeofday(&tv, NULL);
+	if (*philo->lethal)
+		return ;
 	pthread_mutex_lock(philo->print);
 	printf("%li %i has taken a fork\n", tvtoms(time_diff(tv, philo->born)),
 		philo->id);
@@ -36,6 +38,8 @@ static void	pheat(t_philo *philo)
 		grab_fork(philo, philo->forks[1]);
 		grab_fork(philo, philo->forks[0]);
 	}
+	if (*philo->lethal)
+		return ;
 	gettimeofday(&philo->last_eat, NULL);
 	pthread_mutex_lock(philo->print);
 	printf("%li %i is eating\n", tvtoms(time_diff(philo->last_eat,
@@ -58,6 +62,8 @@ static void	phsleep(t_philo *philo)
 	pthread_mutex_unlock(philo->print);
 	wait(philo->settings->time_sleep);
 	gettimeofday(&tv, NULL);
+	if (*philo->lethal)
+		return ;
 	pthread_mutex_lock(philo->print);
 	printf("%li %i is thinking\n", tvtoms(time_diff(tv, philo->born)),
 		philo->id);
@@ -72,9 +78,11 @@ void	*philo_manager(void *arg)
 	gettimeofday(&philo->born, NULL);
 	pthread_mutex_unlock(&philo->mutex);
 	philo->last_eat = philo->born;
-	while (1)
+	while (!(*philo->lethal))
 	{
 		pheat(philo);
+		if (*philo->lethal)
+			break ;
 		phsleep(philo);
 	}
 	return (arg);
