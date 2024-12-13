@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:46:51 by jeperez-         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:42:57 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@ static void	grab_fork(t_philo *philo, t_fork *fork)
 
 static void	pheat(t_philo *philo)
 {
-	if (philo->id % 2)
-	{
-		grab_fork(philo, philo->forks[0]);
-		grab_fork(philo, philo->forks[1]);
-	}
-	else
-	{
-		grab_fork(philo, philo->forks[1]);
-		grab_fork(philo, philo->forks[0]);
-	}
+	grab_fork(philo, philo->forks[0]);
+	if (philo->forks[0] == philo->forks[1])
+		return ;
+	grab_fork(philo, philo->forks[1]);
 	if (*philo->lethal)
 		return ;
 	gettimeofday(&philo->last_eat, NULL);
@@ -78,9 +72,13 @@ void	*philo_manager(void *arg)
 	gettimeofday(&philo->born, NULL);
 	pthread_mutex_unlock(&philo->mutex);
 	philo->last_eat = philo->born;
+	if (philo->id % 2)
+		wait(5);
 	while (!(*philo->lethal))
 	{
 		pheat(philo);
+		if (philo->forks[0] == philo->forks[1])
+			break ;
 		if (*philo->lethal)
 			break ;
 		phsleep(philo);
