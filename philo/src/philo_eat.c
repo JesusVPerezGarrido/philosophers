@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 17:10:42 by jeperez-          #+#    #+#             */
-/*   Updated: 2025/01/07 17:19:28 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:07:02 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,16 @@ static void	grab_fork(t_philo *philo, pthread_mutex_t *fork)
 
 static void	pheat_forks(t_philo *philo)
 {
-	grab_fork(philo, philo->forks[0]);
-	grab_fork(philo, philo->forks[1]);
+	if (philo->id % 2)
+	{
+		grab_fork(philo, philo->forks[0]);
+		grab_fork(philo, philo->forks[1]);
+	}
+	else
+	{
+		grab_fork(philo, philo->forks[1]);
+		grab_fork(philo, philo->forks[0]);
+	}
 }
 
 static void	pheat_print(t_philo *philo)
@@ -58,4 +66,3 @@ void	pheat(t_philo *philo)
 	pthread_mutex_unlock(philo->forks[0]);
 	pthread_mutex_unlock(philo->forks[1]);
 }
-

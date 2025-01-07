@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:13:22 by jeperez-          #+#    #+#             */
-/*   Updated: 2025/01/07 17:11:38 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:01:07 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	philo_init(t_philo *philo)
 	philo->last_eat = philo->born;
 	pthread_mutex_unlock(&philo->leat_mut);
 	if (philo->id % 2)
-		wait(10);
+		wait(1);
 }
 
 void	*philo_manager(void *arg)

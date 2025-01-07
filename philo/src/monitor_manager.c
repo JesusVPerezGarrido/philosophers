@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
-/*   Updated: 2025/01/07 17:22:34 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:01:13 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*monitor_manager(void *arg)
 	t_table	*table;
 
 	table = arg;
-	wait(10);
+	wait(1);
 	while (!is_lethal(&table->lethal, &table->lethal_mut))
 	{
 		check_death(table);
