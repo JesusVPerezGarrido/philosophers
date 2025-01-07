@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:23:06 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:54:20 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:26:27 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	clean_table(t_table *table)
 			index = 0;
 			while (index < table->size)
 			{
-				pthread_mutex_destroy(&table->forks[index].mutex);
+				pthread_mutex_destroy(&table->forks[index]);
 				index++;
 			}
 			free(table->forks);

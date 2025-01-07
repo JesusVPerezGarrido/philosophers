@@ -16,7 +16,9 @@ FILES		:=	create_forks.c \
 				philo_manager.c \
 				monitor_manager.c \
 				time_utils.c \
-				valid_args.c
+				valid_args.c \
+				is_lethal.c \
+				philo_eat.c
 SRCS		:=	$(addprefix src/, $(FILES))
 OBJS		:=	$(addprefix obj/, $(FILES:.c=.o))
 

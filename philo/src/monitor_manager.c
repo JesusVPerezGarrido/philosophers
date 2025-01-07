@@ -6,67 +6,74 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:54:04 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:22:34 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	philo_start(t_table *table)
+static void	check_death(t_table *table)
 {
-	int	index;
+	struct timeval	tv;
+	struct timeval	last_eat;
+	int				index;
 
 	index = 0;
 	while (index < table->size)
 	{
-		pthread_mutex_lock(&table->philos[index].mutex);
+		pthread_mutex_lock(&table->philos[index].leat_mut);
+		last_eat = table->philos[index].last_eat;
+		pthread_mutex_unlock(&table->philos[index].leat_mut);
+		gettimeofday(&tv, NULL);
+		if (tvtoms(time_diff(tv, last_eat)) > table->settings.time_die)
+		{
+			pthread_mutex_lock(&table->print);
+			printf("%li %i died\n", tvtoms(time_diff(tv, last_eat)), index);
+			pthread_mutex_unlock(&table->print);
+			pthread_mutex_lock(&table->lethal_mut);
+			table->lethal = true;
+			pthread_mutex_unlock(&table->lethal_mut);
+			return ;
+		}
 		index++;
 	}
 }
 
-static t_bool	check_death(struct timeval tv, t_table *table, int index)
+static void	check_neats(t_table *table)
 {
-	t_philo			philo;
-	t_milliseconds	time_die;
+	int	index;
+	int	lowest;
 
-	philo = table->philos[index];
-	time_die = table->settings.time_die;
-	if (tvtoms(time_diff(tv, philo.last_eat)) > time_die + 1)
+	lowest = 2147483647;
+	index = 0;
+	while (index < table->size)
 	{
-		table->lethal = true;
-		pthread_mutex_lock(&table->print);
-		printf("%li %i died\n", tvtoms(time_diff(tv, philo.born)), index);
-		pthread_mutex_unlock(&table->print);
-		return (true);
+		pthread_mutex_lock(&table->philos[index].neat_mut);
+		if (table->philos[index].number_eat < lowest)
+			lowest = table->philos[index].number_eat;
+		pthread_mutex_unlock(&table->philos[index].neat_mut);
+		index++;
 	}
-	return (false);
+	if (lowest >= table->settings.number_eats)
+	{
+		pthread_mutex_lock(&table->lethal_mut);
+		table->lethal = true;
+		pthread_mutex_unlock(&table->lethal_mut);
+	}
 }
 
 void	*monitor_manager(void *arg)
 {
-	t_table			*table;
-	struct timeval	tv;
-	int				index;
-	int				lowest;
+	t_table	*table;
 
 	table = arg;
-	philo_start(table);
-	while (true)
+	wait(10);
+	while (!is_lethal(&table->lethal, &table->lethal_mut))
 	{
-		index = -1;
-		gettimeofday(&tv, NULL);
-		lowest = table->philos[0].number_eat;
-		while (++index < table->size)
-		{
-			if (table->philos[index].number_eat < lowest)
-				lowest = table->philos[index].number_eat;
-			if (check_death(tv, table, index))
-				break ;
-		}
-		if (table->lethal || (table->settings.number_eats
-				&& lowest >= table->settings.number_eats))
-			break ;
+		check_death(table);
+		if (table->settings.number_eats
+			&& !is_lethal(&table->lethal, &table->lethal_mut))
+			check_neats(table);
 	}
-	table->lethal = true;
-	return (arg);
+	return (NULL);
 }

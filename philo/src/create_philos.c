@@ -6,11 +6,23 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 10:49:43 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:38:34 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:09:03 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	create_philo_mutex(t_table *table, t_philo *philo)
+{
+	philo->lethal = &table->lethal;
+	philo->print = &table->print;
+	philo->lethal_mut = &table->lethal_mut;
+	if (pthread_mutex_init(&philo->neat_mut, NULL))
+		return (1);
+	if (pthread_mutex_init(&philo->leat_mut, NULL))
+		return (1);
+	return (0);
+}
 
 t_exit	create_philos(t_table *table)
 {
@@ -24,16 +36,13 @@ t_exit	create_philos(t_table *table)
 	while (index < table->size)
 	{
 		philo = &table->philos[index];
-		philo->id = index;
+		philo->id = index + 1;
 		philo->number_eat = 0;
+		philo->settings = table->settings;
 		philo->forks[0] = &table->forks[index];
 		philo->forks[1] = &table->forks[(index + 1) % table->size];
-		philo->settings = &table->settings;
-		philo->lethal = &table->lethal;
-		philo->print = &table->print;
-		if (pthread_mutex_init(&philo->mutex, NULL))
+		if (create_philo_mutex(table, philo))
 			return (MUTEX_ERROR);
-		pthread_mutex_lock(&philo->mutex);
 		if (pthread_create(&philo->thread, NULL, philo_manager, philo))
 			return (THREAD_ERROR);
 		index++;

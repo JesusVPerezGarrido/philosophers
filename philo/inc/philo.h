@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:57:53 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/12/10 13:37:53 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:11:56 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,19 @@ typedef struct s_setting
 	int				number_eats;
 }	t_settings;
 
-typedef struct s_fork
-{
-	int				id;
-	pthread_mutex_t	mutex;
-}					t_fork;
-
 typedef struct s_philo
 {
 	int				id;
 	struct timeval	born;
 	struct timeval	last_eat;
+	pthread_mutex_t	leat_mut;
 	int				number_eat;
-	t_fork			*forks[2];
-	t_settings		*settings;
+	pthread_mutex_t	neat_mut;
+	pthread_mutex_t	*forks[2];
+	t_settings		settings;
 	t_bool			*lethal;
+	pthread_mutex_t	*lethal_mut;
 	pthread_t		thread;
-	pthread_mutex_t	mutex;
 	pthread_mutex_t	*print;
 }					t_philo;
 
@@ -68,12 +64,19 @@ typedef struct s_table
 {
 	int				size;
 	t_philo			*philos;
-	t_fork			*forks;
+	pthread_mutex_t	*forks;
 	t_bool			lethal;
+	pthread_mutex_t	lethal_mut;
 	pthread_mutex_t	print;
 	pthread_t		thread;
 	t_settings		settings;
 }					t_table;
+
+typedef union u_mutex_value
+{
+	struct timeval	tv;
+	int				i;
+}					t_mutex_value;
 
 t_exit		valid_args(int argc, char **argv);
 int			ft_atoi(const char *nptr);
@@ -85,5 +88,7 @@ t_exit		create_philos(t_table *table);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		*philo_manager(void *arg);
 void		*monitor_manager(void *arg);
+void		pheat(t_philo *philo);
+t_bool		is_lethal(t_bool *address, pthread_mutex_t *mutex);
 
 #endif
