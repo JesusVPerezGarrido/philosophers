@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 11:14:38 by jeperez-          #+#    #+#             */
-/*   Updated: 2025/01/07 18:01:13 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:34:08 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ static void	check_death(t_table *table)
 		last_eat = table->philos[index].last_eat;
 		pthread_mutex_unlock(&table->philos[index].leat_mut);
 		gettimeofday(&tv, NULL);
-		if (tvtoms(time_diff(tv, last_eat)) > table->settings.time_die)
+		if (tvtoms(time_diff(tv, last_eat)) > table->settings.time_die + 2)
 		{
 			pthread_mutex_lock(&table->print);
-			printf("%li %i died\n", tvtoms(time_diff(tv, last_eat)), index);
+			printf("%li %i died\n", tvtoms(time_diff(tv, table->start)),
+				index + 1);
 			pthread_mutex_unlock(&table->print);
 			pthread_mutex_lock(&table->lethal_mut);
 			table->lethal = true;
@@ -67,13 +68,14 @@ void	*monitor_manager(void *arg)
 	t_table	*table;
 
 	table = arg;
-	wait(1);
+	usleep(1000);
 	while (!is_lethal(&table->lethal, &table->lethal_mut))
 	{
 		check_death(table);
 		if (table->settings.number_eats
 			&& !is_lethal(&table->lethal, &table->lethal_mut))
 			check_neats(table);
+		usleep(10);
 	}
 	return (NULL);
 }

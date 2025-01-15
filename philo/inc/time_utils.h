@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:09:36 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 12:13:44 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:29:05 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,5 @@ typedef time_t	t_microseconds;
 struct timeval	time_diff(struct timeval time1, struct timeval time2);
 t_milliseconds	tvtoms(struct timeval tv);
 t_microseconds	mstomus(t_milliseconds ms);
-void			wait(t_milliseconds ms);
 
 #endif

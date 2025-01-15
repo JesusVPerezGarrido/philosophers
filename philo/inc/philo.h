@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:57:53 by jeperez-          #+#    #+#             */
-/*   Updated: 2025/01/07 17:11:56 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/13 12:07:55 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int				size;
+	struct timeval	start;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	t_bool			lethal;

@@ -6,7 +6,7 @@
 /*   By: jeperez- <jeperez-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:08:56 by jeperez-          #+#    #+#             */
-/*   Updated: 2024/11/22 15:52:48 by jeperez-         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:28:52 by jeperez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,4 @@ t_milliseconds	tvtoms(struct timeval tv)
 t_microseconds	mstomus(t_microseconds ms)
 {
 	return (1000 * ms);
-}
-
-void	wait(t_milliseconds ms)
-{
-	struct timeval	start;
-	struct timeval	current;
-
-	gettimeofday(&start, 0);
-	current = start;
-	while (tvtoms(time_diff(current, start)) < ms)
-	{
-		usleep(ms);
-		gettimeofday(&current, 0);
-	}
 }
